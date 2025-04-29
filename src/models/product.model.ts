@@ -32,6 +32,6 @@ const productSchema = new mongoose.Schema({
     variants: [imageVariantSchema]
 }, { timestamps: true })
 
-const Product = mongoose.models['Product'] ? mongoose.models['Product'] : mongoose.model<imageVariantSchema>('Product', productSchema);
+const Product = mongoose.models['Product'] ? mongoose.models['Product'] : mongoose.model('Product', productSchema);
 
 export default Product;
