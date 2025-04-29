@@ -9,7 +9,7 @@ if (!cached) {
 
 async function connectDb() {
     if (cached.conn) {
-        return;
+        return; 
     }
 
     if (!cached.promise) {
