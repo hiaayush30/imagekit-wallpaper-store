@@ -1,5 +1,11 @@
 import mongoose, { Document } from "mongoose";
 
+// In MongoDB, and therefore in Mongoose, you have the flexibility to embed related data directly within a document instead of
+// always relying on separate collections and joins (like in traditional relational databases). Nested schemas allow you to define
+// the structure of these embedded documents.
+
+
+
 export const IMAGE_VARIANTS = {
     SQUARE: {
         type: "SQUARE",
@@ -22,6 +28,8 @@ export const IMAGE_VARIANTS = {
 }
 
 export type imageVariantType = keyof typeof IMAGE_VARIANTS;
+// The keyof operator in TypeScript takes a type and produces a union type of its property names (keys).
+// imageVariantType is a type that can only be one of the string literals: "SQUARE" | "WIDE" | "POTRAIT".
 
 export interface ImageVariant {
     type:imageVariantType;

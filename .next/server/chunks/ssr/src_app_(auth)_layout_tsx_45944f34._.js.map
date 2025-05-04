@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/pandemicpanda30/Desktop/imagekit-wallpaper-store/src/app/%28auth%29/layout.tsx"],"sourcesContent":["import React, { ReactNode } from 'react'\n\nfunction layout({ children }: { children: ReactNode }) {\n    return (\n        <div>\n            <div className='absolute top-0 inset-x-0 bg-orange-600 p-5'>\n              <Link className='text-xl font-semibold'>Imagekit-Store</Link>\n            </div>\n            {children}\n        </div>\n    )\n}\n\nexport default layout\n"],"names":[],"mappings":";;;;;AAEA,SAAS,OAAO,EAAE,QAAQ,EAA2B;IACjD,qBACI,8OAAC;;0BACG,8OAAC;gBAAI,WAAU;0BACb,cAAA,8OAAC;oBAAK,WAAU;8BAAwB;;;;;;;;;;;YAEzC;;;;;;;AAGb;uCAEe","debugId":null}}]
+}

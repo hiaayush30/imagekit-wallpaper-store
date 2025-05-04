@@ -16,6 +16,7 @@ export interface IOrder extends Document {
     userId: mongoose.Types.ObjectId | PopulatedUser;
     productId: mongoose.Types.ObjectId | PopulatedProduct;
     variant: ImageVariant;
+    
     razorpayOrderId: string;
     razorpayPaymentId: string;
     amount: number;
