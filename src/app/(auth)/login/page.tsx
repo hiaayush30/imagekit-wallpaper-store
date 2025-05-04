@@ -2,30 +2,42 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
+import { signIn } from "next-auth/react"
+import { toast } from "sonner"
 
 export default function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+    if (error) {
+      setError(decodeURIComponent(error))
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Here you would typically handle the signup logic
-    console.log({ email, password })
-
+    await signIn("credentials", {
+      email,
+      password,
+      callbackUrl: "/dashboard",
+    })
+    toast("logged in successfully!")
     setIsLoading(false)
   }
 
@@ -77,12 +89,13 @@ export default function LoginForm() {
                 </button>
               </div>
             </div>
+            {error && <div className="text-red-500 text-center my-1">{error}</div>}
             <Button
               type="submit"
               className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium"
               disabled={isLoading}
             >
-              {isLoading ? "Creating account..." : "Sign up"}
+              {isLoading ? "Loggin in..." : "Login"}
             </Button>
           </form>
         </CardContent>

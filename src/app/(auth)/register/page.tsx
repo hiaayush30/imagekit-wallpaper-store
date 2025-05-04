@@ -9,8 +9,12 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
+import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function SignupForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -21,10 +25,19 @@ export default function SignupForm() {
     setIsLoading(true)
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Here you would typically handle the signup logic
-    console.log({ email, password })
+    try {
+      await axios.post("/api/auth/register",{
+        email,
+        password
+      },{
+        method:"POST"
+      })
+      toast("signed up successfully")
+      router.push("/login")
+    } catch (error) {
+      const axiosError = error as AxiosError<{error:string}>;
+      toast(axiosError.response?.data.error ?? "Something went wrong! Please try again later!")
+    }
 
     setIsLoading(false)
   }
