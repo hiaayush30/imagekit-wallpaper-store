@@ -21,60 +21,48 @@ module.exports = mod;
 
 var { g: global, __dirname } = __turbopack_context__;
 {
-// import { withAuth } from "next-auth/middleware"
-// import { NextResponse } from "next/server"
-// export default withAuth(
-//     // `withAuth` augments your `Request` with the user's token.
-//     function middleware(req) {
-//         console.log(req.nextauth.token)
-//         return NextResponse.next();
-//     },
-//     {
-//         callbacks: {
-//             authorized: ({ token, req }) => {
-//                 const { pathname } = req.nextUrl
-//                 //allow auth related routes
-//                 if (
-//                     pathname.startsWith("/api/auth") ||
-//                     pathname.startsWith("/login") ||
-//                     pathname.startsWith("/register")
-//                 ) {
-//                     return true;
-//                 }
-//                 //public routes
-//                 if (
-//                     pathname === "/" ||
-//                     pathname.startsWith("/api/products") ||
-//                     pathname.startsWith("/products")
-//                 ) {
-//                     return true
-//                 }
-//                 //admin routes require admin role
-//                 if (
-//                     pathname.startsWith("/admin")
-//                 ) {
-//                     return token?.role === "admin"
-//                 }
-//                 //all other routes require authentication
-//                 return token ? true : false
-//             },
-//         },
-//     },
-// )
-// export const config = {
-//     matcher: [
-//         // match all routed paths except static files,image optimization files/favicon files and public folder
-//         "/((?!_next/static|_next/image|favicon.ico|public/).*)"
-//     ]
-// }
 __turbopack_context__.s({
     "config": (()=>config),
     "middleware": (()=>middleware)
 });
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$middleware$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/middleware.js [middleware-edge] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$api$2f$server$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/api/server.js [middleware-edge] (ecmascript) <module evaluation>");
+//or
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/server/web/spec-extension/response.js [middleware-edge] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$jwt$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/jwt/index.js [middleware-edge] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$middleware$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/middleware.js [middleware-edge] (ecmascript)");
+;
+;
+const __TURBOPACK__default__export__ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$middleware$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["withAuth"])(// `withAuth` augments your `Request` with the user's token.
+function middleware(req) {
+    console.log(req.nextauth.token);
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].next();
+}, {
+    callbacks: {
+        authorized: ({ token, req })=>{
+            const { pathname } = req.nextUrl;
+            //allow auth related routes
+            if (pathname.startsWith("/api/auth") || pathname.startsWith("/login") || pathname.startsWith("/register")) {
+                return true;
+            }
+            //public routes
+            if (pathname === "/" || pathname.startsWith("/api/products") || pathname.startsWith("/products")) {
+                return true;
+            }
+            //admin routes require admin role
+            if (pathname.startsWith("/admin")) {
+                return token?.role === "admin";
+            }
+            //all other routes require authentication
+            return token ? true : false;
+        }
+    }
+});
+const config = {
+    matcher: [
+        // match all routed paths except static files,image optimization files/favicon files and public folder
+        "/((?!_next/static|_next/image|favicon.ico|public/).*)"
+    ]
+};
 ;
 ;
 ;
@@ -86,6 +74,11 @@ async function middleware(request) {
     const url = request.nextUrl; //url that user is requesting for
     // console.log("Token:", token);
     if (token) {
+        if (token?.role !== "admin") {
+            if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api/admin")) {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", request.nextUrl));
+            }
+        }
         if (url.pathname.startsWith('/login') || url.pathname.startsWith('/signup')) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL('/dashboard', request.url));
         }
@@ -111,9 +104,9 @@ const config = {
 var { g: global, __dirname } = __turbopack_context__;
 {
 __turbopack_context__.s({});
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$middleware$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/middleware.js [middleware-edge] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$api$2f$server$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/next/dist/esm/api/server.js [middleware-edge] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$jwt$2f$index$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/jwt/index.js [middleware-edge] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$middleware$2e$js__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next-auth/middleware.js [middleware-edge] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$middleware$2e$ts__$5b$middleware$2d$edge$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/src/middleware.ts [middleware-edge] (ecmascript) <locals>");
 }}),
 "[project]/src/middleware.ts [middleware-edge] (ecmascript) <exports>": ((__turbopack_context__) => {

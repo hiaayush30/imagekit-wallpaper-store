@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
-import { toast } from "sonner"
 
 export default function LoginForm() {
   const [email, setEmail] = useState("")
@@ -35,9 +34,8 @@ export default function LoginForm() {
     await signIn("credentials", {
       email,
       password,
-      callbackUrl: "/dashboard",
+      callbackUrl: "/dashboard"
     })
-    toast("logged in successfully!")
     setIsLoading(false)
   }
 
