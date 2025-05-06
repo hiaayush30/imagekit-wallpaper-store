@@ -1249,6 +1249,10 @@
     padding-block: calc(var(--spacing) * 6);
   }
 
+  .py-10 {
+    padding-block: calc(var(--spacing) * 10);
+  }
+
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
@@ -1361,6 +1365,10 @@
 
   .text-slate-900 {
     color: var(--color-slate-900);
+  }
+
+  .text-stone-800 {
+    color: var(--color-stone-800);
   }
 
   .text-white {
@@ -1673,15 +1681,6 @@
 
   .placeholder\:text-muted-foreground::placeholder {
     color: var(--muted-foreground);
-  }
-
-  @media (hover: hover) {
-    .hover\:scale-105:hover {
-      --tw-scale-x: 105%;
-      --tw-scale-y: 105%;
-      --tw-scale-z: 105%;
-      scale: var(--tw-scale-x) var(--tw-scale-y);
-    }
   }
 
   @media (hover: hover) {

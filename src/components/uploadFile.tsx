@@ -11,9 +11,11 @@ import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { File } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // UploadExample component demonstrates file uploading using ImageKit's Next.js SDK.
 const UploadFile = () => {
+    const router = useRouter();
     // State to keep track of the current upload progress (percentage)
     const [progress, setProgress] = useState(0);
 
@@ -88,6 +90,7 @@ const UploadFile = () => {
             authParams = await authenticator();
         } catch (authError) {
             console.error("Failed to authenticate for upload:", authError);
+            router.push('/login')
             return;
         }
         const { signature, expire, token, publicKey } = authParams;
