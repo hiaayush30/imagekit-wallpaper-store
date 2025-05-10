@@ -4,6 +4,10 @@
 - Imagekit
 - Razorpay
 
+---
+# Razorpay
+- server creates an order and sends it to razorpay, meanwhile keep the order status as pending
+- razorpay webhook will send info on which we can change the status of the order
 
 ---
 # next-auth

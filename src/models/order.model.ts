@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 import { ImageVariant } from "./product.model";
 
 interface PopulatedUser {
@@ -78,6 +78,6 @@ const orderSchema = new mongoose.Schema<IOrder>({
     previewUrl: String
 }, { timestamps: true })
 
-const Order = mongoose.models['Order'] ? mongoose.models['Order'] : mongoose.model<IOrder>('Order', orderSchema);
+const Order:Model<IOrder> = mongoose.models['Order'] ? mongoose.models['Order'] : mongoose.model<IOrder>('Order', orderSchema);
 
 export default Order;
