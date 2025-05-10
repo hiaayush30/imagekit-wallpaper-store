@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Model } from "mongoose";
 
 // In MongoDB, and therefore in Mongoose, you have the flexibility to embed related data directly within a document instead of
 // always relying on separate collections and joins (like in traditional relational databases). Nested schemas allow you to define
@@ -32,16 +32,17 @@ export type imageVariantType = keyof typeof IMAGE_VARIANTS;
 // imageVariantType is a type that can only be one of the string literals: "SQUARE" | "WIDE" | "POTRAIT".
 
 export interface ImageVariant {
-    type:imageVariantType;
-    price:number;
-    lisence:"personal"|"commercial"
+    type: imageVariantType;
+    price: number;
+    lisence: "personal" | "commercial"
 }
 
-export interface IProduct extends Document{
-    name:string;
-    description:string;
-    imageUrl:string;
-    variants:ImageVariant[]
+export interface IProduct {
+    _id?: mongoose.Types.ObjectId;
+    name: string;
+    description: string;
+    imageUrl: string;
+    variants: ImageVariant[]
 }
 
 const imageVariantSchema = new mongoose.Schema({
@@ -76,6 +77,6 @@ const productSchema = new mongoose.Schema<IProduct>({
     variants: [imageVariantSchema]
 }, { timestamps: true })
 
-const Product = mongoose.models['Product'] ? mongoose.models['Product'] : mongoose.model<IProduct>('Product', productSchema);
+const Product: Model<IProduct> = mongoose.models['Product'] ? mongoose.models['Product'] : mongoose.model<IProduct>('Product', productSchema);
 
 export default Product;
