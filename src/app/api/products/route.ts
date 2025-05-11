@@ -6,13 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        connectDb();
+        await connectDb();
         const products = await Product.find({}).lean();
 
         if (!products || products.length == 0) {
             return NextResponse.json({
                 error: "No products found"
-            }, { status: 500 })
+            }, { status: 404 })
         }
         return NextResponse.json({
             products

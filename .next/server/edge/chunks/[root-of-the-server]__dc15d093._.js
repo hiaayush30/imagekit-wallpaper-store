@@ -38,6 +38,10 @@ function middleware(req) {
     callbacks: {
         authorized: ({ token, req })=>{
             const { pathname } = req.nextUrl;
+            //allow webhook
+            if (pathname.startsWith("/api/webhook")) {
+                return true;
+            }
             //allow auth related routes
             if (pathname.startsWith("/api/auth") || pathname.startsWith("/login") || pathname.startsWith("/register")) {
                 return true;
