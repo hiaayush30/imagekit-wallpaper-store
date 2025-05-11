@@ -484,7 +484,6 @@ async function POST(req) {
                 productId: productId.toString()
             }
         });
-        console.log("ye lo order:", order);
         const newOrder = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].create({
             userId: session.user.id,
             productId,
@@ -493,7 +492,6 @@ async function POST(req) {
             amount: Math.round(variant.price * 100),
             status: "pending"
         });
-        console.log("ye lo newOrder:", order);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             orderId: order.id,
             amount: order.amount,

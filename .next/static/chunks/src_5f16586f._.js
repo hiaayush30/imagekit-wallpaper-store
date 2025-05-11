@@ -59,7 +59,7 @@ const RazorpayPayment = ()=>{
                     name: 'Your Company Name',
                     description: 'Secure Payment',
                     order_id: order.orderId,
-                    callback_url: `${window.location.origin}/payment-success`,
+                    callback_url: `${window.location.origin}/dashboard?success=true`,
                     prefill: {
                         name: '',
                         email: '',

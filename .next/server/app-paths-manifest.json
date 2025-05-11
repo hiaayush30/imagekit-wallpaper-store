@@ -1,4 +1,5 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/api/orders/route": "app/api/orders/route.js",
   "/api/webhook/razorpay/route": "app/api/webhook/razorpay/route.js",
   "/dashboard/page": "app/dashboard/page.js",

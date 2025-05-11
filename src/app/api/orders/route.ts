@@ -30,7 +30,7 @@ export async function POST(req: Request) {
                 productId: productId.toString()
             }
         })
-        console.log("ye lo order:",order)
+
         const newOrder = await Order.create({
             userId: session.user.id,
             productId,
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
             amount: Math.round(variant.price * 100),
             status: "pending"
         }) 
-        console.log("ye lo newOrder:",order)
+
         return NextResponse.json({
             orderId: order.id,
             amount: order.amount,

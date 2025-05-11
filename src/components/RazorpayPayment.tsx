@@ -47,7 +47,7 @@ const RazorpayPayment = () => {
                     name: 'Your Company Name',
                     description: 'Secure Payment',
                     order_id: order.orderId, // Use the order ID from the backend
-                    callback_url: `${window.location.origin}/payment-success`, // Use dynamic success URL
+                    callback_url: `${window.location.origin}/dashboard?success=true`, // Use dynamic success URL
                     prefill: {
                         name: '', // You can prefill user details if available
                         email: '',
