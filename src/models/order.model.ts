@@ -16,9 +16,9 @@ export interface IOrder extends Document {
     userId: mongoose.Types.ObjectId | PopulatedUser;
     productId: mongoose.Types.ObjectId | PopulatedProduct;
     variant: ImageVariant;
-    
+
     razorpayOrderId: string;
-    razorpayPaymentId: string;
+    razorpayPaymentId?: string;
     amount: number;
     status: "pending" | "completed" | "failed";
     downloadUrl?: string;
@@ -59,7 +59,7 @@ const orderSchema = new mongoose.Schema<IOrder>({
     },
     razorpayPaymentId: {
         type: String,
-        required: true
+        required: false
     },
     amount: {
         type: Number,
@@ -78,6 +78,6 @@ const orderSchema = new mongoose.Schema<IOrder>({
     previewUrl: String
 }, { timestamps: true })
 
-const Order:Model<IOrder> = mongoose.models['Order'] ? mongoose.models['Order'] : mongoose.model<IOrder>('Order', orderSchema);
+const Order: Model<IOrder> = mongoose.models['Order'] ? mongoose.models['Order'] : mongoose.model<IOrder>('Order', orderSchema);
 
 export default Order;

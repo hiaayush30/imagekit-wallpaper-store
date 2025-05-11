@@ -1,5 +1,6 @@
 {
-  "/api/products/route": "app/api/products/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/webhook/razorpay/route": "app/api/webhook/razorpay/route.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

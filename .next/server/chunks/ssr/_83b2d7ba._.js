@@ -75,18 +75,104 @@ function page() {
                 className: "flex items-center justify-center py-10 text-stone-800",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$uploadFile$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/src/app/dashboard/page.tsx",
-                    lineNumber: 9,
+                    lineNumber: 10,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/page.tsx",
-                lineNumber: 8,
+                lineNumber: 9,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
+                        id: "payment-form",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                for: "amount",
+                                children: "Amount:"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/dashboard/page.tsx",
+                                lineNumber: 14,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "number",
+                                id: "amount",
+                                name: "amount",
+                                required: true
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/dashboard/page.tsx",
+                                lineNumber: 15,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>payNow(),
+                                children: "Pay Now"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/dashboard/page.tsx",
+                                lineNumber: 16,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/dashboard/page.tsx",
+                        lineNumber: 13,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("script", {
+                        children: `  
+        async function payNow() {
+      const amount = document.getElementById('amount').value;
+
+          // Create order by calling the server endpoint
+          const response = await fetch('/create-order', {
+            method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({amount, currency: 'INR', receipt: 'receipt#1', notes: { } })
+      });
+
+          const order = await response.json();
+
+          // Open Razorpay Checkout
+          const options = {
+            key: 'YOUR_KEY_ID', // Replace with your Razorpay key_id
+          amount: '50000', // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: 'INR',
+          name: 'Acme Corp',
+          description: 'Test Transaction',
+          order_id: 'order_IluGWxBm9U8zJ8', // This is the order_id created in the backend
+          callback_url: 'http://localhost:3000/payment-success', // Your success URL
+          prefill: {
+            name: 'Gaurav Kumar',
+          email: 'gaurav.kumar@example.com',
+          contact: '9999999999'
+        },
+          theme: {
+            color: '#F37254'
+        },
+      };
+
+          const rzp = new Razorpay(options);
+          rzp.open();
+    }`
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/page.tsx",
+                        lineNumber: 18,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/dashboard/page.tsx",
+                lineNumber: 12,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/page.tsx",
-        lineNumber: 6,
+        lineNumber: 7,
         columnNumber: 5
     }, this);
 }
