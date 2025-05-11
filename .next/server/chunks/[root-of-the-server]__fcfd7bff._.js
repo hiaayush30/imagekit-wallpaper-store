@@ -307,8 +307,8 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/crypto [external] (crypto, cjs)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/models/order.model.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)"); // Adjust path as needed
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/models/order.model.ts [app-route] (ecmascript)"); // Adjust path as needed
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nodemailer$2f$lib$2f$nodemailer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/nodemailer/lib/nodemailer.js [app-route] (ecmascript)");
 ;
 ;
@@ -319,57 +319,46 @@ const POST = async (req)=>{
     try {
         const body = await req.text();
         const signature = req.headers.get("x-razorpay-signature");
-        const expectedSignature = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHmac("sha256", process.env.razorpay_secret).update(body).digest('hex');
+        const secret = process.env.razorpay_secret;
+        if (!secret) {
+            console.error("Razorpay secret is not defined in environment variables.");
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "Internal server error"
+            }, {
+                status: 500
+            });
+        }
+        const expectedSignature = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHmac("sha256", secret).update(body).digest('hex');
         if (signature !== expectedSignature) {
+            console.warn("Webhook signature verification failed."); // Log the failure
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: "Invalid signature"
             }, {
                 status: 400
             });
         }
-        //all this above done to check that this is a valid request done by the legit razorpay
+        // Signature is valid, proceed to process the event
         const event = JSON.parse(body);
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"])();
-        //handling 1 event
-        if (event.event === "payment.captured") {
-            const payment = event.payload.payment.entity;
-            const order = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].findOneAndUpdate({
-                razorpayOrderId: payment.order_id
-            }, {
-                razorpayPaymentId: payment.id,
-                status: "completed"
-            }).populate([
-                {
-                    path: "productId",
-                    select: "name"
-                },
-                {
-                    path: "userId",
-                    select: "email"
-                }
-            ]);
-            if (order) {
-                const transporter = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nodemailer$2f$lib$2f$nodemailer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].createTransport({
-                    service: "sandbox.smtp.mailtrap.io",
-                    port: 2525,
-                    auth: {
-                        user: process.env.mailtrap_username,
-                        pass: process.env.mailtrap_password
-                    }
-                });
-                await transporter.sendMail({
-                    from: "hiaayush30@gmail.com",
-                    to: order.userId.email,
-                    subject: "Order completed",
-                    text: `Your order ${order.productId.name} has been successfully placed`
-                });
-                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                    message: "success"
-                });
-            }
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"])(); // Ensure database connection
+        // Handle different webhook events
+        switch(event.event){
+            case "payment.captured":
+                await handlePaymentCaptured(event);
+                break;
+            case "payment.failed":
+                await handlePaymentFailed(event);
+                break;
+            // Add handlers for other events you're interested in (e.g., order.paid, refund.created)
+            default:
+                console.log("Unhandled webhook event:", event.event);
         }
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            message: "Webhook received and processed"
+        }, {
+            status: 200
+        });
     } catch (error) {
-        console.log(error);
+        console.error("Error processing webhook:", error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: "Something went wrong"
         }, {
@@ -377,6 +366,73 @@ const POST = async (req)=>{
         });
     }
 };
+// Function to handle payment.captured event
+async function handlePaymentCaptured(event) {
+    try {
+        const payment = event.payload.payment.entity;
+        const order = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].findOneAndUpdate({
+            razorpayOrderId: payment.order_id
+        }, {
+            razorpayPaymentId: payment.id,
+            status: "completed"
+        }).populate([
+            {
+                path: "productId",
+                select: "name"
+            },
+            {
+                path: "userId",
+                select: "email"
+            }
+        ]);
+        if (order) {
+            const transporter = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$nodemailer$2f$lib$2f$nodemailer$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].createTransport({
+                service: "sandbox.smtp.mailtrap.io",
+                port: 2525,
+                auth: {
+                    user: process.env.mailtrap_username,
+                    pass: process.env.mailtrap_password
+                }
+            });
+            await transporter.sendMail({
+                from: "hiaayush30@gmail.com",
+                to: order.userId.email,
+                subject: "Order completed",
+                text: `Your order ${order.productId.name} has been successfully placed`
+            });
+            console.log("Payment captured and order updated:", order);
+        } else {
+            console.warn("Order not found for Razorpay order ID:", payment.order_id);
+        }
+    } catch (error) {
+        console.error("Error handling payment.captured event:", error);
+    // Consider whether to throw the error to the main handler, or handle it here.
+    // If you throw here, the main handler will return a 500.  If you handle here,
+    // the webhook will still return 200 to Razorpay (indicating receipt), but
+    // you've logged the error.  Choose the behavior that best fits your needs.
+    // throw error; // Option 1: Throw to main handler
+    }
+}
+// Function to handle payment.failed event
+async function handlePaymentFailed(event) {
+    try {
+        const payment = event.payload.payment.entity;
+        // Update order status to failed.  You might have different logic here
+        // (e.g., create a new order, send a failure notification).
+        const order = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$models$2f$order$2e$model$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].findOneAndUpdate({
+            razorpayOrderId: payment.order_id
+        }, {
+            status: "failed"
+        });
+        if (order) {
+            console.log("Payment failed for order:", order);
+        } else {
+            console.warn("Order not found for failed payment:", payment.order_id);
+        }
+    } catch (error) {
+        console.error("Error handling payment.failed event:", error);
+    }
+}
 }}),
 
 };

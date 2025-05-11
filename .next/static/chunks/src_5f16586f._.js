@@ -67,29 +67,6 @@ const RazorpayPayment = ()=>{
                     },
                     theme: {
                         color: '#3366FF'
-                    },
-                    handler: async function(response) {
-                        // Verify the payment signature on the server
-                        const verificationResponse = await fetch('/api/webhook/razorpay', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature
-                            })
-                        });
-                        const verificationData = await verificationResponse.json();
-                        if (verificationData.success) {
-                            alert('Payment successful! Order ID: ' + response.razorpay_order_id);
-                            // Redirect to a success page or update UI
-                            window.location.href = `/payment-success?order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}`;
-                        } else {
-                            alert('Payment failed: ' + verificationData.error);
-                        // Handle payment failure
-                        }
                     }
                 };
                 const rzp = new window.Razorpay(options);

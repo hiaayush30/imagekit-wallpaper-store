@@ -24,8 +24,6 @@ const RazorpayPayment = () => {
                 },
                 body: JSON.stringify({
                     amount: parseFloat(amount) * 100, // Convert to paise
-                    // currency: 'INR',
-                    // receipt: 'receipt#1',
                     productId: "6820fbe5a27ccf66c205008b",
                     variant: {
                         price: amount,
@@ -56,31 +54,31 @@ const RazorpayPayment = () => {
                     theme: {
                         color: '#3366FF',
                     },
-                    handler: async function (response) {
-                        // Verify the payment signature on the server
-                        const verificationResponse = await fetch('/api/webhook/razorpay', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature,
-                            }),
-                        });
+                //     handler: async function (response) {
+                //         // Verify the payment signature on the server
+                //         const verificationResponse = await fetch('/api/webhook/razorpay', {
+                //             method: 'POST',
+                //             headers: {
+                //                 'Content-Type': 'application/json',
+                //             },
+                //             body: JSON.stringify({
+                //                 razorpay_order_id: response.razorpay_order_id,
+                //                 razorpay_payment_id: response.razorpay_payment_id,
+                //                 razorpay_signature: response.razorpay_signature,
+                //             }),
+                //         });
 
-                        const verificationData = await verificationResponse.json();
+                //         const verificationData = await verificationResponse.json();
 
-                        if (verificationData.success) {
-                            alert('Payment successful! Order ID: ' + response.razorpay_order_id);
-                            // Redirect to a success page or update UI
-                            window.location.href = `/payment-success?order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}`;
-                        } else {
-                            alert('Payment failed: ' + verificationData.error);
-                            // Handle payment failure
-                        }
-                    },
+                //         if (verificationData.success) {
+                //             alert('Payment successful! Order ID: ' + response.razorpay_order_id);
+                //             // Redirect to a success page or update UI
+                //             window.location.href = `/payment-success?order_id=${response.razorpay_order_id}&payment_id=${response.razorpay_payment_id}`;
+                //         } else {
+                //             alert('Payment failed: ' + verificationData.error);
+                //             // Handle payment failure
+                //         }
+                //     },
                 };
 
                 const rzp = new window.Razorpay(options);
